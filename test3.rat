@@ -1,0 +1,54 @@
+/* RAT26S Comprehensive Test Case
+   Testing: Functions, Parameters, Recursion, 
+   Declarations, All Statements, and All Operators.
+*/
+@
+    function calculate_area (radius real, pi real)
+    integer temp;
+    {
+        read (temp);
+        if (radius > 0.0)
+            return pi * radius * radius;
+        otherwise
+            return 0.0;
+        fi
+    }
+
+    function is_valid (val integer)
+    {
+        if (val == 0) return false; fi
+        return true;
+    }
+@
+    integer count, i, result;
+    real area, circumference;
+    boolean flag;
+@
+    read (count, area);
+    flag = true;
+    i = 1;
+
+    while (i <= count)
+    {
+        write (i);
+        /* Testing complex expression R25-R28 */
+        result = (i * 2 + 10) / 2 - 1;
+        
+        if (is_valid(result))
+            write (calculate_area(area, 3.14));
+        otherwise
+            write (0);
+        fi
+
+        i = i + 1;
+    }
+
+    /* Testing remaining Relops and Primaries */
+    if (area != 0.0) 
+        write (area);
+    fi
+
+    if (count => 10)
+        flag = false;
+    fi
+@
