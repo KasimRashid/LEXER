@@ -376,7 +376,7 @@ class RAT26SParser:
         else:
             raise SyntaxError(f"Line {token.line}: Expected RELOP but found {token.type} ('{token.value}')")
 
-    # R25. <Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>
+    # R25. <Expression> -> <Term> <Expression Prime>
     def parse_expression(self):
         """Standard arithmetic expression with term and expression prime for precedence."""
         self._print_production("<Expression> -> <Term> <Expression Prime>")
@@ -384,7 +384,7 @@ class RAT26SParser:
         node.children.append(self.parse_term())
         node.children.append(self.parse_expression_prime())
         return node
-
+    # <Expression Prime> -> + <Term> <Expression Prime> | - <Term> <Expression Prime> | ε
     def parse_expression_prime(self):
         """Handles addition and subtraction (left-associative)."""
         token = self.current_token()
@@ -398,7 +398,7 @@ class RAT26SParser:
         self._print_production("<Expression Prime> -> ε")
         return Node("<Empty>")
     
-    # R26. <Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>
+    # R26. <Term> -> <Factor> <Term Prime>
     def parse_term(self):
         """Groups factors into terms."""
         self._print_production("<Term> -> <Factor> <Term Prime>")
@@ -406,7 +406,7 @@ class RAT26SParser:
         node.children.append(self.parse_factor())
         node.children.append(self.parse_term_prime())
         return node
-
+    # <Term Prime> -> * <Factor> <Term Prime> | / <Factor> <Term Prime> | ε
     def parse_term_prime(self):
         """Handles multiplication and division (higher precedence than + and -)."""
         token = self.current_token()
